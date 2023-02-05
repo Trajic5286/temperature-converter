@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<script async src="jtemp.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="jtemp.css">
+<title>Temperature Converter</title>
+<meta name="description" content="Temperature degrees conversions of Fahrenheit (&deg;F), Celsius (&deg;C), Kelvin (K), Rankine (&deg;R).">
+<style>
+@media all and (max-width: 576px) {
+	.calc2 input[type=text], .calc2 input[type=number] { width:100%; padding:5px; }
+	.calc2 tr td:nth-child(2) {	width:160px; width:calc(100% - 130px); }
+	.calc2 tr td:nth-child(3) {	width: 30px; }
+}
+</style>
+</head>
+<body>
+<div id="lcol">
+<div id="doc">
+
+<h1><div class="title">Temperature Converter</h1></div>
+<form name="calcform" autocomplete="off">
+<table class="calc2">
+<tr>
+<td><label for="f">Fahrenheit:</label></td>
+<td class="math"><input type="text" id="f" name="f" min="-459.67" tabindex="1" autofocus></td>
+<td class="mathsymbol">&deg;F</td>
+<td><input onclick="ConvertFahrenheit()" type="button" value="Convert" class="btn" tabindex="2"></td>
+</tr>
+<tr>
+<td><label for="r">Rankine:</label></td>
+<td class="math"><input type="number" id="r" name="r" min="0" tabindex="3"></td>
+<td class="mathsymbol">&deg;R</td>
+<td><input onclick="ConvertRankine()" type="button" value="Convert" class="btn" tabindex="4"></td>
+</tr>
+<tr>
+<td><label for="cel">Celsius:</label></td>
+<td class="math"><input type="text" id="cel" name="cel" min="-273.15" tabindex="5"></td>
+<td class="mathsymbol">&deg;C</td>
+<td><input onclick="ConvertCelsius()" type="button" value="Convert" class="btn" tabindex="6"></td>
+</tr>
+<tr>
+<td><label for="cen">Centigrade:</label></td>
+<td class="math"><input type="text" id="cen" name="cen" min="-273" tabindex="7"></td>
+<td class="mathsymbol">&deg;C</td>
+<td><input onclick="ConvertCentigrade()" type="button" value="Convert" class="btn" tabindex="8"></td>
+</tr>
+<tr>
+<td><label for="k">Kelvin:</label></td>
+<td class="math"><input type="number" id="k" name="k" min="0" tabindex="9"></td>
+<td class="mathsymbol">K</td>
+<td><input onclick="ConvertKelvin()" type="button" value="Convert" class="btn" tabindex="10"></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><input type="reset" value="Reset" class="btn" onclick="creset()"></td>
+</tr>
+</table>
+</form>
+
+<script src="convert.js"></script>
+<script>
+    function creset()
+	{
+		document.calcform.f.style.backgroundColor = "lavander";
+		document.calcform.r.style.backgroundColor = "lavender";
+		document.calcform.cel.style.backgroundColor = "lavander";
+		document.calcform.cen.style.backgroundColor = "lavander";
+		document.calcform.k.style.backgroundColor = "lavander";
+	}
+	function ConvertFahrenheit() 
+	{
+		t = document.calcform.f.value;
+		if( t=='' ) return;
+		t = parseFloat(t);
+		if( t<-459.67 ) {
+			document.calcform.f.style.backgroundColor = "#ffdddd";
+			return;
+		}
+		creset();
+		document.calcform.f.value   = roundnum(t,              4);
+		document.calcform.r.value   = roundnum((t+459.67),     4);
+		document.calcform.cel.value = roundnum((t-32)*5/9,     4);
+		document.calcform.cen.value = roundnum((t-32)*5/9,     4);
+		document.calcform.k.value   = roundnum((t+459.67)*5/9, 4);
+	}
+	function ConvertRankine() 
+	{
+		t = document.calcform.r.value;
+		if( t=='' ) return;
+		t = parseFloat(t);
+		if( t<0 ) {
+			document.calcform.r.style.backgroundColor = "#ffdddd";
+			return;
+		}
+		creset();
+		document.calcform.f.value   = roundnum((t-459.67),     4);
+		document.calcform.r.value   = roundnum(t,              4);
+		document.calcform.cel.value = roundnum((t-491.67)*5/9, 4);
+		document.calcform.cen.value = roundnum((t-491.67)*5/9, 4);
+		document.calcform.k.value   = roundnum((t*5/9),        4);
+	}
+	function ConvertCelsius() 
+	{
+		t = document.calcform.cel.value;
+		if( t=='' ) return;
+		t = parseFloat(t);
+		if( t<-273.15 ) {
+			document.calcform.cel.style.backgroundColor = "#ffdddd";
+			return;
+		}
+		creset();
+		document.calcform.f.value   = roundnum((t*9/5+32),     4);
+		document.calcform.r.value   = roundnum((t+273.15)*9/5, 4);
+		document.calcform.cel.value = roundnum(t,              4);
+		document.calcform.cen.value = roundnum(t,              4);
+		document.calcform.k.value   = roundnum((t+273.15),     4);
+	}
+	function ConvertCentigrade() 
+	{
+		t = document.calcform.cen.value;
+		if( t=='' ) return;
+		t = parseFloat(t);
+		if( t<-273.15 ) {
+			document.calcform.cen.style.backgroundColor = "#ffdddd";
+			return;
+		}
+		creset();
+		document.calcform.f.value   = roundnum((t*9/5+32),     4);
+		document.calcform.r.value   = roundnum((t+273.15)*9/5, 4);
+		document.calcform.cel.value = roundnum(t,              4);
+		document.calcform.cen.value = roundnum(t,              4);
+		document.calcform.k.value   = roundnum((t+273.15),     4);
+	}
+	function ConvertKelvin() 
+	{
+		t = document.calcform.k.value;
+		if( t=='' ) return;
+		t = parseFloat(t);
+		if( t<0 ) {
+			document.calcform.k.style.backgroundColor = "#ffdddd";
+			return;
+		}
+		creset();
+		document.calcform.f.value   = roundnum((t*9/5-459.67), 4);
+		document.calcform.r.value   = roundnum((t*9/5),        4);
+		document.calcform.cel.value = roundnum((t-273.15),     4);
+		document.calcform.cen.value = roundnum((t-273.15),     4);
+		document.calcform.k.value   = roundnum(t,              4);
+	}
+    </script>
